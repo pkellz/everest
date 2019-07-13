@@ -6,18 +6,29 @@ const yargs = require("yargs").alias({
   'e': 'end'
 })
 const argv = yargs.argv
-const validIntervals = [300,900,1800,7200,14400,86400]
+const validIntervals = {
+  fiveMinutes: 300,
+  fifteenMinutes: 900,
+  thirtyMinutes: 1800,
+  twoHours: 7200,
+  fourHours: 14400,
+  sixHours: 21600,
+  twelveHours: 43200
+}
+const resources = {
+  Chart: require('./botChart')
+}
 
 function Bot()
 {
   const { interval, currency, points, start, end } = argv
-  this.interval = interval || 300 // Poloniex-allowed candlestick periods [300,900,1800,7200,14400,86400]
-  this.currency = currency || "BTC_XMR" // Default currency pair
-  this.majorCurrency = this.currency.split("_")[0] // BTC
-  this.minorCurrency = this.currency.split("_")[1] // XMR
+  this.interval = interval || validIntervals.fifteenMinutes     // Poloniex-allowed candlestick periods [300,900,1800,7200,14400,86400]
+  this.currency = currency || "BTC_XMR"                         // Default currency pair
+  this.startTime = start || 1491048000                          // April 1, 2017
   this.dataPoints = points || []
-  this.startTime = start || 1491048000 // April 1, 2017
-  this.endTime = end || this.startTime + 86400 // 12 hours later
+  this.endTime = end || this.startTime + validIntervals.twelveHours
+  this.majorCurrency = this.currency.split("_")[0]              // BTC
+  this.minorCurrency = this.currency.split("_")[1]              // XMR
   this.prices = []
   this.currentMovingAverage = 0
   this.lengthOfMA = 0
@@ -28,6 +39,16 @@ function Bot()
   this.orderNumber = ""
   this.localMax = []
   this.currentResistance = 0.018
+  initResources.call(this, resources)
 }
 
-module.exports = new Bot()
+function initResources(resources)
+{
+  for(let res in resources)
+  {
+    const boundResource = resources[res].bind(null, this);
+    this[res.toLowerCase()] = new boundResource;
+  }
+}
+
+module.exports = Bot
