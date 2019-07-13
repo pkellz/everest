@@ -15,8 +15,9 @@ const validIntervals = {
   sixHours: 21600,
   twelveHours: 43200
 }
+const BotLogger = require('./resources/BotLogger')
 const resources = {
-  Chart: require('./botChart')
+  Chart: require('./resources/BotChart')
 }
 
 function Bot()
@@ -39,6 +40,7 @@ function Bot()
   this.orderNumber = ""
   this.localMax = []
   this.currentResistance = 0.018
+  this.log = new BotLogger().log
   initResources.call(this, resources)
 }
 

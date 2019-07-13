@@ -1,5 +1,5 @@
 const fs = require('fs');
-const gChart = require('./assets/googleChart')
+const gChart = require('../assets/googleChart')
 const Poloniex = require('poloniex.js')
 const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
 require('dotenv').config();
