@@ -18,10 +18,11 @@ BotStrategy.prototype.tick = function(candlestick)
 {
   this.currentPrice = candlestick.priceAverage
   this.prices.push(this.currentPrice)
-  this.bot.log("Price: " + candlestick.priceAverage + "\tMoving Average: " + this.indicators.movingAverage(this.prices,15))
-  this.evaluatePositions()
-  this.updateOpenTrades()
-  this.showPositions()
+  // console.log(this.currentPrice);
+  this.bot.log("Price: " + candlestick.priceAverage + "\tMoving Average: " + this.indicators.movingAverage(this.prices, 15))
+  // this.evaluatePositions()
+  // this.updateOpenTrades()
+  // this.showPositions()
 }
 
 BotStrategy.prototype.evaluatePositions = function()

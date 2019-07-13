@@ -1,6 +1,6 @@
 const BotLogger = require('./BotLogger')
 
-function BotCandlestick({ period = 300, open = null, close = null, high = null, low = null, priceAverage = null })
+function BotCandlestick(period = 300, open = null, close = null, high = null, low = null, priceAverage = null)
 {
   this.current = null
   this.open = open
@@ -20,7 +20,7 @@ BotCandlestick.prototype.tick = function(price)
     this.open = this.current
   if(!this.high || this.current > this.high)
     this.high = this.current
-  if(!this.low = || this.current < this.low)
+  if(!this.low || this.current < this.low)
     this.low = this.current
   if(Date.now() / 1000 >= (this.startTime + this.period))
   {
@@ -35,3 +35,5 @@ BotCandlestick.prototype.isClosed = function()
 {
   return this.close != null
 }
+
+module.exports = BotCandlestick

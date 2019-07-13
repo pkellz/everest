@@ -3,9 +3,11 @@ const bot = new Bot()
 
 async function init()
 {
-  // await bot.chart.fetchHistoricalData()
-  // bot.chart.generateChart()
-  console.log(bot);
+  await bot.chart.fetchHistoricalData()
+
+  bot.candlesticks.forEach(candlestick => {
+    bot.strategy.tick(candlestick)
+  })
 }
 
 init()

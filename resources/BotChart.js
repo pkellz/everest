@@ -1,5 +1,6 @@
 const fs = require('fs');
 const gChart = require('../assets/googleChart')
+const BotCandlestick = require('./BotCandlestick')
 const Poloniex = require('poloniex.js')
 const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
 require('dotenv').config();
@@ -12,14 +13,23 @@ function Chart(bot)
 Chart.prototype.fetchHistoricalData = function()
 {
   return new Promise((resolve, reject)=> {
-    console.log('Fetching Chart Data...');
+    console.log('Fetching Historical Data...');
     poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.interval, this.bot.startTime, this.bot.endTime)
     .then(points => {
       console.log('Success!');
       this.bot.historicalData = points
+      this._saveCandlesticks(points)
       resolve()
     })
     .catch(err => { reject(err) })
+  })
+}
+
+Chart.prototype._saveCandlesticks = function(dataPoints)
+{
+  dataPoints.forEach(point => {
+    if(point.open && point.close && point.high && point.low)
+      this.bot.candlesticks.push(new BotCandlestick(this.bot.period, point.open, point.close, point.high, point.low, point.weightedAverage))
   })
 }
 

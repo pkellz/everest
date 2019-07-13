@@ -42,6 +42,7 @@ function Bot()
   this.localMax = []
   this.currentResistance = 0.018
   this.log = new BotLogger().log
+  this.candlesticks = []
   initResources.call(this, resources)
 }
 
