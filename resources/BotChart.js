@@ -9,18 +9,27 @@ function Chart(bot)
   this.bot = bot
 }
 
+Chart.prototype.fetchHistoricalData = function()
+{
+  return new Promise((resolve, reject)=> {
+    console.log('Fetching Chart Data...');
+    poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.interval, this.bot.startTime, this.bot.endTime)
+    .then(points => {
+      console.log('Success!');
+      this.bot.historicalData = points
+      resolve()
+    })
+    .catch(err => { reject(err) })
+  })
+}
+
 Chart.prototype.generateChart = function()
 {
-  console.log('Fetching Chart Data...');
-  poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.interval, this.bot.startTime, this.bot.endTime)
-  .then(points => {
-    console.log('Success!');
-    this.bot.historicalData = points
+  console.log('Generating Chart...');
+  if(this.bot.historicalData.length > 0)
     this.createGoogleChart(this.bot.historicalData)
-  })
-  .catch(err => {
-    console.log(err);
-  })
+  else
+    throw new Error("No Historical Data Available!")
 }
 
 Chart.prototype.createGoogleChart = function(historicalData)
@@ -31,7 +40,7 @@ Chart.prototype.createGoogleChart = function(historicalData)
 
 Chart.prototype.getHtmlForGoogleChart = function(historicalData)
 {
-  console.log('Generating Html File...');
+  console.log('Generating Html File Data...');
 
   let nextDataPoint
   let lastPairPrice
@@ -100,4 +109,10 @@ Chart.prototype.writeChartDataToHtmlFile = function(chartHtml)
     console.log('Success!');
   })
 }
+
+Chart.prototype.getPoints = function()
+{
+  return this.bot.historicalData
+}
+
 module.exports = Chart
