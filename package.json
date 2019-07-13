@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "poloniex.js": "^1.0.1",
     "yargs": "^13.2.4"
   }
