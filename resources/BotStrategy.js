@@ -10,6 +10,7 @@ function BotStrategy(bot)
   this.currentPrice = ""
   this.currentClose = ""
   this.numSimulTrades = 1
+  this.log = this.bot.log
   this.indicators = new BotIndicator()
 }
 

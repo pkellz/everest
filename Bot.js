@@ -17,7 +17,8 @@ const validIntervals = {
 }
 const BotLogger = require('./resources/BotLogger')
 const resources = {
-  Chart: require('./resources/BotChart')
+  Chart: require('./resources/BotChart'),
+  Strategy: require('./resources/BotStrategy')
 }
 
 function Bot()
