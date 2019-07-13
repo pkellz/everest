@@ -70,7 +70,7 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
     if(dataPoints.length > 2 && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-1].price) && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-3].price))
     {
       dataPoints[dataPoints.length-2].label = `'MAX'`
-			dataPoints[dataPoints.length-2].description =`' This is a local maximum'`
+      dataPoints[dataPoints.length-2].description =`' This is a local maximum'`
       numberOfSimilarLocalMaxes = 0
 
       this.bot.localMax.forEach(oldMax => {
