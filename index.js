@@ -13,7 +13,11 @@ function fetchChartData(bot)
   poloniex.returnChartData(bot.majorCurrency, bot.minorCurrency, bot.interval, bot.startTime, bot.endTime)
   .then(points => {
     bot.historicalData = points
+    console.log(points);
     generateHistoricalDataChart(bot.historicalData)
+  })
+  .catch(err => {
+    console.log(err);
   })
 }
 
@@ -45,7 +49,7 @@ function buildHtmlFile(historicalData)
     {
         nextDataPoint = historicalData.pop()
         lastPairPrice = nextDataPoint.weightedAverage
-        dataDate = new Date(nextDataPoint.date)
+        dataDate = new Date(nextDataPoint.date * 1000) 
     }
     else
     {

@@ -16,8 +16,8 @@ function Bot()
   this.majorCurrency = this.currency.split("_")[0] // BTC
   this.minorCurrency = this.currency.split("_")[1] // XMR
   this.dataPoints = points || []
-  this.startTime = start || 1491048000 // April 17, 7 A.M
-  this.endTime = end || this.startTime + 3600000 // 12 hours from start time
+  this.startTime = start || 1491048000 // April 1, 2017
+  this.endTime = end || this.startTime + 86400 // 12 hours later
   this.prices = []
   this.currentMovingAverage = 0
   this.lengthOfMA = 0
