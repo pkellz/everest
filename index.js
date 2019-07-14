@@ -1,13 +1,13 @@
-const Bot = require("./Bot")
-const bot = new Bot()
+const PoloniexBot = require("./Bot")
+const bot = new PoloniexBot()
 
-async function init()
+async function backTest()
 {
   await bot.chart.fetchHistoricalData()
-
-  bot.candlesticks.forEach(candlestick => {
-    bot.strategy.tick(candlestick)
-  })
+  bot.chart.generateChart()
+  // bot.candlesticks.forEach(candlestick => {
+  //   bot.strategy.tick(candlestick)
+  // })
 }
 
-init()
+backTest()

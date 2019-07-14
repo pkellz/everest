@@ -29,14 +29,14 @@ BotTrade.prototype.showTrade = function()
 {
   let tradeStatus = `Entry Price: ${this.entryPrice} Status: ${this.status} Exit Price: ${this.exitPrice}`
 
-  if(this.status = "CLOSED")
+  if(this.status == "CLOSED")
   {
-    tradeStatus += "Profit: "
+    tradeStatus += " Profit: "
     if(this.exitPrice > this.entryPrice)
       tradeStatus += "\033[92m"
     else
       tradeStatus += "\033[91m"
-    tradeStatus += "" + (this.exitPrice - this.entryPrice) + " \033]0m"
+    tradeStatus += this.exitPrice - this.entryPrice +"\033[0m"
   }
   this.log(tradeStatus)
 }

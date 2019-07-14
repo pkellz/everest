@@ -24,13 +24,13 @@ const resources = {
 function Bot()
 {
   const { interval, currency, points, start, end } = argv
-  this.interval = interval || validIntervals.fifteenMinutes     // Poloniex-allowed candlestick periods [300,900,1800,7200,14400,86400]
+  this.interval = interval || validIntervals.fifteenMinutes
   this.currency = currency || "BTC_XMR"                         // Default currency pair
   this.startTime = start || 1491048000                          // April 1, 2017
   this.dataPoints = points || []
-  this.endTime = end || this.startTime + validIntervals.twelveHours
-  this.majorCurrency = this.currency.split("_")[0]              // BTC
-  this.minorCurrency = this.currency.split("_")[1]              // XMR
+  this.endTime =  end || this.startTime + validIntervals.twelveHours
+  this.majorCurrency = this.currency.split("_")[0]
+  this.minorCurrency = this.currency.split("_")[1]
   this.prices = []
   this.currentMovingAverage = 0
   this.lengthOfMA = 0
