@@ -24,11 +24,11 @@ const resources = {
 function Bot()
 {
   const { interval, currency, points, start, end } = argv
-  this.interval = interval || validIntervals.fifteenMinutes
+  this.interval = interval || validIntervals.fiveMinutes        // Candle Width
   this.currency = currency || "BTC_XMR"                         // Default currency pair
   this.startTime = start || 1491048000                          // April 1, 2017
+  this.endTime = 1491107000               
   this.dataPoints = points || []
-  this.endTime =  end || this.startTime + validIntervals.twelveHours
   this.majorCurrency = this.currency.split("_")[0]
   this.minorCurrency = this.currency.split("_")[1]
   this.prices = []

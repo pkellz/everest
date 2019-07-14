@@ -1,13 +1,49 @@
 const PoloniexBot = require("./Bot")
 const bot = new PoloniexBot()
+const BotCandlestick = require('./resources/BotCandlestick')
 
-async function backTest()
+async function liveTrader()
 {
-  await bot.chart.fetchHistoricalData()
-  bot.chart.generateChart()
-  // bot.candlesticks.forEach(candlestick => {
-  //   bot.strategy.tick(candlestick)
-  // })
+  let developingCandlestick = new BotCandlestick()
+  while(true)
+  {
+    try
+    {
+      bot.chart.getCurrentPrice().then(price => {
+        developingCandlestick.tick(price)
+      })
+    }
+    catch(e)
+    {
+      e.stackTrace()
+      setTimeout(() => {
+        bot.chart.getCurrentPrice().then(price => {
+          developingCandlestick.tick(price)
+        })
+      },30000)
+    }
+
+    if(developingCandlestick.isClosed())
+    {
+      bot.candlesticks.push(developingCandlestick)
+      bot.strategy.tick(developingCandlestick)
+      developingCandlestick = new BotCandlestick()
+    }
+    await sleep(10000);
+  }
 }
 
-backTest()
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+liveTrader()
+
+// async function backTester()
+// {
+//   await bot.chart.fetchHistoricalData()
+//   bot.chart.generateChart()
+//   bot.candlesticks.forEach(candlestick => {
+//     bot.strategy.tick(candlestick)
+//   })
+// }

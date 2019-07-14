@@ -25,11 +25,18 @@ Chart.prototype.fetchHistoricalData = function()
   })
 }
 
+Chart.prototype.getCurrentPrice = function()
+{
+  return new Promise((resolve, reject)=>{
+    poloniex.returnTicker().then(data => { resolve(data[this.bot.currency].last) }).catch(err => { reject(err) })
+  })
+}
+
 Chart.prototype._saveCandlesticks = function(dataPoints)
 {
   dataPoints.forEach(point => {
     if(point.open && point.close && point.high && point.low)
-      this.bot.candlesticks.push(new BotCandlestick(this.bot.period, point.open, point.close, point.high, point.low, point.weightedAverage))
+      this.bot.candlesticks.push(new BotCandlestick(this.bot.interval, point.open, point.close, point.high, point.low, point.weightedAverage))
   })
 }
 
@@ -88,8 +95,8 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
 
     if(dataPoints.length > 2 && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-1].price) && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-3].price))
     {
-      dataPoints[dataPoints.length-2].label = `'MAX'`
-      dataPoints[dataPoints.length-2].description =`' This is a local maximum'`
+      // dataPoints[dataPoints.length-2].label = `'MAX'`
+      // dataPoints[dataPoints.length-2].description =`' This is a local maximum'`
       numberOfSimilarLocalMaxes = 0
 
       this.bot.localMax.forEach(oldMax => {
