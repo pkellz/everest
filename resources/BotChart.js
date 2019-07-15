@@ -1,6 +1,7 @@
 const fs = require('fs');
-const gChart = require('../assets/googleChart')
+const gChart = require('../assets/googleChartPieces')
 const BotCandlestick = require('./BotCandlestick')
+const BotIndicator = require('./BotIndicator')
 const Poloniex = require('poloniex.js')
 const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
 require('dotenv').config();
@@ -8,18 +9,23 @@ require('dotenv').config();
 function Chart(bot)
 {
   this.bot = bot
+  this.indicators = new BotIndicator()
 }
 
 Chart.prototype.fetchHistoricalData = function()
 {
   return new Promise((resolve, reject)=> {
     console.log('Fetching Historical Data...');
-    poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.interval, this.bot.startTime, this.bot.endTime)
-    .then(points => {
-      console.log('Success!');
-      this.bot.historicalData = points
-      this._saveCandlesticks(points)
-      resolve()
+    poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.period, this.bot.startTime, this.bot.endTime)
+    .then(res => {
+      if(!res.error)
+      {
+        console.log('Success!');
+        this.bot.historicalData = res
+        this._saveCandlesticks(res)
+        resolve()
+      }
+      else throw new Error(res.error)
     })
     .catch(err => { reject(err) })
   })
@@ -36,7 +42,7 @@ Chart.prototype._saveCandlesticks = function(dataPoints)
 {
   dataPoints.forEach(point => {
     if(point.open && point.close && point.high && point.low)
-      this.bot.candlesticks.push(new BotCandlestick(this.bot.interval, point.open, point.close, point.high, point.low, point.weightedAverage))
+      this.bot.candlesticks.push(new BotCandlestick(this.bot, point.open, point.close, point.high, point.low, point.weightedAverage))
   })
 }
 
@@ -66,6 +72,7 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
   let pointString = ``
   let done = true
   let numberOfSimilarLocalMaxes
+  let temp = []
 
   while(done)
   {
@@ -74,12 +81,12 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
         nextDataPoint = historicalData.pop()
         lastPairPrice = nextDataPoint.weightedAverage
         dataDate = new Date(nextDataPoint.date * 1000)
+        temp.push(lastPairPrice)
     }
     else
     {
       dataPoints.forEach(point => {
-        pointString += `['${point['date']}',${point['price']},${point['label']},${point['description']},${point['trend']}`
-        pointString += "],\n"
+        pointString += `['${point['date']}',${point['price']},${point['label']},${point['description']},${point['trend']}],\n`
       })
       done = false
       break;
@@ -88,33 +95,11 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
     dataPoints.push({
       date: dataDate,
       price: lastPairPrice,
-      trend: this.bot.currentResistance,
+      trend: this.indicators.movingAverage(temp, 15, 3),
       label: 'null',
       description: 'null'
     })
-
-    if(dataPoints.length > 2 && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-1].price) && (dataPoints[dataPoints.length-2].price > dataPoints[dataPoints.length-3].price))
-    {
-      // dataPoints[dataPoints.length-2].label = `'MAX'`
-      // dataPoints[dataPoints.length-2].description =`' This is a local maximum'`
-      numberOfSimilarLocalMaxes = 0
-
-      this.bot.localMax.forEach(oldMax => {
-        if((oldMax > dataPoints[dataPoints.length-2].price - 0.0001) && (oldMax < dataPoints[dataPoints.length-2].price + 0.0001))
-          ++numberOfSimilarLocalMaxes
-      })
-
-      if (numberOfSimilarLocalMaxes > 2)
-      {
-        this.bot.currentResistance = dataPoints[dataPoints.length-2].price
-        dataPoints[dataPoints.length-2].trend = dataPoints[dataPoints.length-2].price
-        dataPoints[dataPoints.length-1].trend = dataPoints[dataPoints.length-2].price
-      }
-
-      this.bot.localMax.push(dataPoints[dataPoints.length-2].price)
-    }
   }
-
   return gChart.head + pointString + gChart.tail
 }
 

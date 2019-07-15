@@ -3,17 +3,23 @@ const yargs = require("yargs").alias({
   'c': 'currency',
   'p': 'points',
   's': 'start',
-  'e': 'end'
+  'e': 'end',
+  'p': 'period'
 })
 const argv = yargs.argv
-const validIntervals = {
+// Time intervals (s)
+const timeInterval = {
+  twoMinutes: 120,
   fiveMinutes: 300,
   fifteenMinutes: 900,
   thirtyMinutes: 1800,
+  oneHour: 3600,
   twoHours: 7200,
   fourHours: 14400,
   sixHours: 21600,
-  twelveHours: 43200
+  twelveHours: 43200,
+  oneDay: 86400,
+  sevenDays: 543200
 }
 const BotLogger = require('./resources/BotLogger')
 const resources = {
@@ -23,24 +29,24 @@ const resources = {
 
 function Bot()
 {
-  const { interval, currency, points, start, end } = argv
-  this.interval = interval || validIntervals.fiveMinutes        // Candle Width
-  this.currency = currency || "BTC_XMR"                         // Default currency pair
-  this.startTime = start || 1491048000                          // April 1, 2017
-  this.endTime = 1491107000               
+  const { interval, currency, points, start, end, period } = argv
+  // Candlestick width for backtesting chart
+  this.period = period || timeInterval.fiveMinutes
+  // Time interval (s) between calculating the next moving average. Shorter intervals = trades happen fastter
+  this.interval = interval || timeInterval.twoMinutes
+  // Default Currency Pair
+  this.currency = currency || "BTC_ETH"
+  // Default Backtesting End Date - Right Now
+  this.endTime = end || new Date().getTime() / 1000
+  // Default Backtesting Start Date
+  this.startTime = start || this.endTime - timeInterval.sixHours
+  if(this.endTime < this.startTime)
+    throw new Error("Start time must be less than the end time!")
   this.dataPoints = points || []
   this.majorCurrency = this.currency.split("_")[0]
   this.minorCurrency = this.currency.split("_")[1]
   this.prices = []
-  this.currentMovingAverage = 0
-  this.lengthOfMA = 0
   this.historicalData = false
-  this.tradePlaced = false
-  this.typeOfTrade = false
-  this.dataData = ""
-  this.orderNumber = ""
-  this.localMax = []
-  this.currentResistance = 0.018
   this.log = new BotLogger().log
   this.candlesticks = []
   initResources.call(this, resources)

@@ -4,7 +4,7 @@ const BotCandlestick = require('./resources/BotCandlestick')
 
 async function liveTrader()
 {
-  let developingCandlestick = new BotCandlestick()
+  let developingCandlestick = new BotCandlestick(bot)
   while(true)
   {
     try
@@ -27,7 +27,7 @@ async function liveTrader()
     {
       bot.candlesticks.push(developingCandlestick)
       bot.strategy.tick(developingCandlestick)
-      developingCandlestick = new BotCandlestick()
+      developingCandlestick = new BotCandlestick(bot)
     }
     await sleep(10000);
   }
@@ -37,13 +37,15 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-liveTrader()
+// liveTrader()
 
-// async function backTester()
-// {
-//   await bot.chart.fetchHistoricalData()
-//   bot.chart.generateChart()
-//   bot.candlesticks.forEach(candlestick => {
-//     bot.strategy.tick(candlestick)
-//   })
-// }
+async function backTester()
+{
+  await bot.chart.fetchHistoricalData()
+  bot.chart.generateChart()
+  bot.candlesticks.forEach(candlestick => {
+    bot.strategy.tick(candlestick)
+  })
+}
+
+// backTester()

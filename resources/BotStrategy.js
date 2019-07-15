@@ -16,7 +16,7 @@ function BotStrategy(bot)
 
 BotStrategy.prototype.tick = function(candlestick)
 {
-  this.currentPrice = candlestick.priceAverage
+  this.currentPrice = parseFloat(candlestick.priceAverage)
   this.prices.push(this.currentPrice)
   this.bot.log("Price: " + candlestick.priceAverage + "\tMoving Average: " + this.indicators.movingAverage(this.prices, 15))
   this.evaluatePositions()
@@ -35,7 +35,7 @@ BotStrategy.prototype.evaluatePositions = function()
 
   if(openTrades.length < this.numSimulTrades)
     if(this.currentPrice < this.indicators.movingAverage(this.prices,15))
-      this.trades.push(new BotTrade(this.currentPrice, 0.0001))
+      this.trades.push(new BotTrade(this.currentPrice, this.bot, 0.0001))
 
   openTrades.forEach(trade => {
     if(this.currentPrice > this.indicators.movingAverage(this.prices, 15))
@@ -45,11 +45,10 @@ BotStrategy.prototype.evaluatePositions = function()
 
 BotStrategy.prototype.updateOpenTrades = function()
 {
-  for(let trade in this.trades)
-  {
+  this.trades.forEach(trade => {
     if(trade.status == "OPEN")
       trade.tick(this.currentPrice)
-  }
+  })
 }
 
 BotStrategy.prototype.showPositions = function()
