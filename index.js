@@ -2,6 +2,17 @@ const PoloniexBot = require("./Bot")
 const bot = new PoloniexBot()
 const BotCandlestick = require('./resources/BotCandlestick')
 
+if(bot.live)
+{
+  console.log('Live Trading Mode...');
+  liveTrader()
+}
+else
+{
+  console.log('Backtesting Mode...');
+  backTest()
+}
+
 async function liveTrader()
 {
   let developingCandlestick = new BotCandlestick(bot)
@@ -33,13 +44,12 @@ async function liveTrader()
   }
 }
 
-function sleep(ms) {
+function sleep(ms)
+{
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// liveTrader()
-
-async function backTester()
+async function backTest()
 {
   await bot.chart.fetchHistoricalData()
   bot.chart.generateChart()
@@ -47,5 +57,3 @@ async function backTester()
     bot.strategy.tick(candlestick)
   })
 }
-
-// backTester()

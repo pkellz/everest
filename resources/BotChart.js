@@ -1,4 +1,5 @@
 const fs = require('fs');
+const home = require('os').homedir()
 const gChart = require('../assets/googleChartPieces')
 const BotCandlestick = require('./BotCandlestick')
 const BotIndicator = require('./BotIndicator')
@@ -95,9 +96,10 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
     dataPoints.push({
       date: dataDate,
       price: lastPairPrice,
-      trend: this.indicators.movingAverage(temp, 15, 3),
+      trend: this.indicators.movingAverage(temp, 15),
       label: 'null',
-      description: 'null'
+      description: 'null',
+
     })
   }
   return gChart.head + pointString + gChart.tail
@@ -106,7 +108,7 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
 Chart.prototype.writeChartDataToHtmlFile = function(chartHtml)
 {
   console.log('Writing Chart Data To Html File...');
-  fs.writeFile('chart.html', chartHtml, function(err){
+  fs.writeFile(`${home}/${this.bot.currency}-Chart.html`, chartHtml, function(err){
     if(err) throw new Error(err)
     console.log('Success!');
   })

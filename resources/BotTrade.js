@@ -11,16 +11,20 @@ function BotTrade(currentPrice, bot, stopLoss = 0)
   this.exitPrice = ""
   this.log = new BotLogger().log
   this.log("Opening Trade...")
-
-  // Uncomment the following lines when you are ready for your bot to make real Buy Orders when live-trading
-  // poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, 0.01).then(data => {
-  //   console.log(data);
-  // })
-  // .catch(err => {
-  //   throw new Error(err)
-  // })
   if(stopLoss)
     this.stopLoss = currentPrice - stopLoss
+
+  // Uncomment the following lines when you are ready for your bot to make real Buy Orders when live-trading
+  if(this.bot.realMoney)
+  {
+    console.log("Initiating a real Buy Order...");
+    poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, 0.01).then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      throw new Error(err)
+    })
+  }
 }
 
 BotTrade.prototype.close = function(currentPrice)
@@ -29,13 +33,16 @@ BotTrade.prototype.close = function(currentPrice)
   this.exitPrice = currentPrice
   this.log('Closing Trade...');
 
-  // Uncomment the following lines when you are ready for your bot to make real Sell Orders when live-trading
-  // poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, 0.001).then(data => {
-  //   console.log(data);
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  // })
+  if(this.bot.realMoney)
+  {
+    console.log("Initiating a real Sell Order...");
+    poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, 0.001).then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 }
 
 BotTrade.prototype.tick = function(currentPrice)

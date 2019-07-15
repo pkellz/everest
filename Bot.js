@@ -1,10 +1,11 @@
 const yargs = require("yargs").alias({
   'i': 'interval',
   'c': 'currency',
-  'p': 'points',
   's': 'start',
   'e': 'end',
-  'p': 'period'
+  'p': 'period',
+  'l': 'live',
+  'r': 'realMoney'
 })
 const argv = yargs.argv
 // Time intervals (s)
@@ -18,8 +19,6 @@ const timeInterval = {
   fourHours: 14400,
   sixHours: 21600,
   twelveHours: 43200,
-  oneDay: 86400,
-  sevenDays: 543200
 }
 const BotLogger = require('./resources/BotLogger')
 const resources = {
@@ -29,9 +28,13 @@ const resources = {
 
 function Bot()
 {
-  const { interval, currency, points, start, end, period } = argv
+  const { interval, currency, points, start, end, period, live, realMoney } = argv
+  // Live Trade Mode - No real money
+  this.live = live || false
+  // Live Trade Mode - With your real money
+  this.realMoney = realMoney || false
   // Candlestick width for backtesting chart
-  this.period = period || timeInterval.fiveMinutes
+  this.period = period || timeInterval.fifteenMinutes
   // Time interval (s) between calculating the next moving average. Shorter intervals = trades happen fastter
   this.interval = interval || timeInterval.twoMinutes
   // Default Currency Pair
