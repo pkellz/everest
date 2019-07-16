@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const PoloniexBot = require("./Bot")
 const bot = new PoloniexBot()
 const BotCandlestick = require('./resources/BotCandlestick')
