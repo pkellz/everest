@@ -76,11 +76,11 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
   let dataDate
   let dataPoints = []
   let pointString = ``
-  let done = true
+  let done = false
   let numberOfSimilarLocalMaxes
   let temp = []
 
-  while(done)
+  while(!done)
   {
     if(historicalData.length > 0)
     {
@@ -94,7 +94,7 @@ Chart.prototype.getHtmlForGoogleChart = function(historicalData)
       dataPoints.forEach(point => {
         pointString += `['${point['date']}',${point['price']},${point['label']},${point['description']},${point['trend']}],\n`
       })
-      done = false
+      done = true
       break;
     }
 
