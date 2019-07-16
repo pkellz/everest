@@ -7,7 +7,7 @@
   "keywords": [],
   "author": "pkellz",
   "bin": {
-    "everest": "./index.js"
+    "everest": "index.js"
   },
   "license": "ISC",
   "dependencies": {
