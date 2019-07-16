@@ -3,26 +3,26 @@ const Poloniex = require('poloniex.js')
 const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
 require('dotenv').config();
 
-function BotTrade(currentPrice, bot, stopLoss = 0)
+function BotTrade(currentPrice, bot, stopLoss)
 {
   this.bot = bot
   this.status = "OPEN"
   this.entryPrice = currentPrice
   this.exitPrice = ""
   this.log = new BotLogger().log
-  this.log("Opening Trade...")
+  this.log("Opening Trade...".yellow)
   if(stopLoss)
     this.stopLoss = currentPrice - stopLoss
 
-  // Uncomment the following lines when you are ready for your bot to make real Buy Orders when live-trading
   if(this.bot.realMoney)
   {
-    console.log("Initiating a real Buy Order...");
-    poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, 0.01).then(data => {
+    this.log(`Initiating Buy Order for ${this.bot.tradeAmount} ${this.bot.majorCurrency} at the rate of 1 ${this.bot.minorCurrency} = ${this.entryPrice} ${this.bot.majorCurrency}...`.yellow);
+    poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, this.bot.tradeAmount).then(data => {
       console.log(data);
     })
     .catch(err => {
-      throw new Error(err)
+      console.log('Error When Placing Buy Order...'.red);
+      console.log(err);
     })
   }
 }
@@ -31,15 +31,16 @@ BotTrade.prototype.close = function(currentPrice)
 {
   this.status = "CLOSED"
   this.exitPrice = currentPrice
-  this.log('Closing Trade...');
+  this.log('Closing Trade...'.yellow);
 
   if(this.bot.realMoney)
   {
-    console.log("Initiating a real Sell Order...");
-    poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, 0.001).then(data => {
+    this.log(`Initiating Sell Order for ${this.bot.tradeAmount} ${this.bot.majorCurrency} at the rate of 1 ${this.bot.minorCurrency} = ${this.exitPrice} ${this.bot.majorCurrency}...`.yellow);
+    poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, this.bot.tradeAmount).then(data => {
       console.log(data);
     })
     .catch(err => {
+      console.log('Error When Placing Sell Order...'.red);
       console.log(err);
     })
   }
@@ -49,7 +50,10 @@ BotTrade.prototype.tick = function(currentPrice)
 {
   if(this.stopLoss)
     if(currentPrice < this.stopLoss)
+    {
+      this.log("Stop Loss Triggered...".red);
       this.close(currentPrice)
+    }
 }
 
 BotTrade.prototype.showTrade = function()

@@ -35,7 +35,12 @@ Chart.prototype.fetchHistoricalData = function()
 Chart.prototype.getCurrentPrice = function()
 {
   return new Promise((resolve, reject)=>{
-    poloniex.returnTicker().then(data => { resolve(data[this.bot.currency].last) }).catch(err => { reject(err) })
+    poloniex.returnTicker().then(data => {
+      if (data[this.bot.currency])
+        resolve(data[this.bot.currency].last)
+      else
+        throw new Error("Invalid Currency Pair!")
+    }).catch(err => { reject(err) })
   })
 }
 

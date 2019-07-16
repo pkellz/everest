@@ -35,7 +35,7 @@ BotStrategy.prototype.evaluatePositions = function()
 
   if(openTrades.length < this.numSimulTrades)
     if(this.currentPrice < this.indicators.movingAverage(this.prices,15))
-      this.trades.push(new BotTrade(this.currentPrice, this.bot, 0.0001))
+      this.trades.push(new BotTrade(this.currentPrice, this.bot, this.bot.stopLoss))
 
   openTrades.forEach(trade => {
     if(this.currentPrice > this.indicators.movingAverage(this.prices, 15))

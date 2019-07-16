@@ -5,7 +5,9 @@ const yargs = require("yargs").alias({
   'e': 'end',
   'p': 'period',
   'l': 'live',
-  'r': 'realMoney'
+  'r': 'real',
+  't': 'tradeAmount',
+  'stopLoss': 'stopLoss'
 })
 const argv = yargs.argv
 // Time intervals (s)
@@ -28,11 +30,14 @@ const resources = {
 
 function Bot()
 {
-  const { interval, currency, points, start, end, period, live, realMoney } = argv
+  const { interval, currency, points, start, end, period, live, real, tradeAmount, stopLoss } = argv
+
   // Live Trade Mode - No real money
   this.live = live || false
   // Live Trade Mode - With your real money
-  this.realMoney = realMoney || false
+  this.realMoney = real || false
+  // Amount to buy/sell for each Order
+  this.tradeAmount = tradeAmount || 0.01
   // Candlestick width for backtesting chart
   this.period = period || timeInterval.fifteenMinutes
   // Time interval (s) between calculating the next moving average. Shorter intervals = trades happen fastter
@@ -40,12 +45,13 @@ function Bot()
   // Default Currency Pair
   this.currency = currency || "BTC_ETH"
   // Default Backtesting End Date - Right Now
-  this.endTime = end || new Date().getTime() / 1000
+  this.endTime = end || Math.floor(new Date().getTime() / 1000)
   // Default Backtesting Start Date
-  this.startTime = start || this.endTime - timeInterval.sixHours
+  this.startTime = start || Math.floor(this.endTime - timeInterval.sixHours)
   if(this.endTime < this.startTime)
     throw new Error("Start time must be less than the end time!")
   this.dataPoints = points || []
+  this.stopLoss = stopLoss || 0.001
   this.majorCurrency = this.currency.split("_")[0]
   this.minorCurrency = this.currency.split("_")[1]
   this.prices = []
