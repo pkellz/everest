@@ -19,7 +19,7 @@ if(argv.config || !process.env.API_KEY && !process.env.API_SECRET)
     const credentials = "API_KEY=" + result['API Key'] + "\nAPI_SECRET="+ result['Secret']
 
     // Save credentials to .env file
-    fs.writeFile(`.env`, credentials, function(err){
+    fs.writeFile(__dirname + `/.env`, credentials, function(err){
       if(err) throw new Error(err)
       console.log('Credentials stored');
     })
