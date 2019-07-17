@@ -7,12 +7,12 @@ const colors = require('colors')
 
 if(bot.live)
 {
-  console.log(`Live Trading Mode... (Major: ${bot.majorCurrency}) (Minor: ${bot.minorCurrency}) (Interval: ${bot.interval}s) (Real Money: ${bot.realMoney}) (Trade Amount: ${bot.tradeAmount}) (Stop Loss: ${bot.stopLoss})`.yellow);
+  console.log(`💰 Live Trading Mode... (Major: ${bot.majorCurrency}) (Minor: ${bot.minorCurrency}) (Interval: ${bot.interval}s) (Real Money: ${bot.realMoney}) (Trade Amount: ${bot.tradeAmount}) (Stop Loss: ${bot.stopLoss})`.yellow);
   liveTrader()
 }
 else
 {
-  console.log(`Backtesting Mode... (Major: ${bot.majorCurrency}) (Minor: ${bot.minorCurrency}) Period: ${bot.period}s Start: ${bot.startTime} End: ${bot.endTime}`.magenta);
+  console.log(`📊 Backtesting Mode... (Major: ${bot.majorCurrency}) (Minor: ${bot.minorCurrency}) Period: ${bot.period}s Start: ${bot.startTime} End: ${bot.endTime}`.magenta);
   backTest()
 }
 

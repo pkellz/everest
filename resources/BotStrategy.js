@@ -18,7 +18,7 @@ BotStrategy.prototype.tick = function(candlestick)
 {
   this.currentPrice = parseFloat(candlestick.priceAverage)
   this.prices.push(this.currentPrice)
-  this.bot.log(`Price: ${candlestick.priceAverage} \tMoving Average: ${this.indicators.movingAverage(this.prices, 15)}`.cyan)
+  this.bot.log(`🔹 Price: ${candlestick.priceAverage} \tMoving Average: ${this.indicators.movingAverage(this.prices, 15)}`.cyan)
   this.evaluatePositions()
   this.updateOpenTrades()
   this.showPositions()
