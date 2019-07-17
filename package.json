@@ -1,6 +1,6 @@
 {
   "name": "everestjs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "poloniex live-trading crypto bot",
   "main": "index.js",
   "scripts": {},
