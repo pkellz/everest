@@ -16,7 +16,7 @@ prompt.message = "Enter your";
 if(argv.config || !process.env.API_KEY && !process.env.API_SECRET)
 {
   prompt.get(['API Key', 'Secret'], function (err, result) {
-    const credentials = "API_KEY=" + result['API Key'] + "\nAPI_SECRET="+ result['Secret']
+    const credentials = "API_KEY=" + result['API Key'] + " API_SECRET="+ result['Secret']
 
     // Save credentials to .env file
     fs.writeFile(__dirname + `/.env`, credentials, function(err){
