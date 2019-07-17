@@ -37,7 +37,7 @@ function Bot()
   // Live Trade Mode - With your real money
   this.realMoney = real || false
   // Amount to buy/sell for each Order
-  this.tradeAmount = tradeAmount || 0.01
+  this.tradeAmount = parseFloat(tradeAmount) || 0.01
   // Candlestick width for backtesting chart
   this.period = period || timeInterval.fifteenMinutes
   // Time interval (s) between calculating the next moving average. Shorter intervals = trades happen fastter

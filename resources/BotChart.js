@@ -4,6 +4,7 @@ const gChart = require('../assets/googleChartPieces')
 const BotCandlestick = require('./BotCandlestick')
 const BotIndicator = require('./BotIndicator')
 const Poloniex = require('poloniex.js')
+const colors = require('colors')
 const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
 require('dotenv').config();
 
@@ -116,7 +117,8 @@ Chart.prototype.writeChartDataToHtmlFile = function(chartHtml)
   fs.writeFile(`${home}/${this.bot.currency}-Chart.html`, chartHtml, function(err){
     if(err) throw new Error(err)
     console.log('Success!');
-  })
+    console.log(`Chart saved to ${home}\\${this.bot.currency}-Chart.html`.yellow);
+  }.bind(this))
 }
 
 Chart.prototype.getPoints = function()
