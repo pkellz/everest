@@ -35,7 +35,7 @@ function Bot()
   // Live Trade Mode - No real money
   this.live = live || false
   // Live Trade Mode - With your real money
-  this.realMoney = real || false
+  this.realMoney = real && this.live
   // Amount to buy/sell for each Order
   this.tradeAmount = parseFloat(tradeAmount) || 0.01
   // Candlestick width for backtesting chart
