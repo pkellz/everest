@@ -35,7 +35,7 @@ function Bot()
   // Live Trade Mode - No real money
   this.live = live || false
   // Live Trade Mode - With your real money
-  this.realMoney = real && this.live
+  this.realMoney = (real && live) || false
   // Amount to buy/sell for each Order
   this.tradeAmount = parseFloat(tradeAmount) || 0.01
   // Candlestick width for backtesting chart
@@ -58,6 +58,7 @@ function Bot()
   this.historicalData = false
   this.log = new BotLogger().log
   this.candlesticks = []
+  this.poloniex = null 
   initResources.call(this, resources)
 }
 

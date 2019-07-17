@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+const Poloniex = require('poloniex.js')
 const PoloniexBot = require("./Bot")
+const BotCandlestick = require('./resources/BotCandlestick')
 const bot = new PoloniexBot()
 const fs = require('fs')
-const BotCandlestick = require('./resources/BotCandlestick')
 const colors = require('colors')
 const prompt = require('prompt');
 const yargs = require("yargs").alias({
@@ -13,20 +14,30 @@ const argv = yargs.argv
 require('dotenv').config();
 prompt.message = "Enter your";
 
-if(argv.config || !process.env.API_KEY && !process.env.API_SECRET)
-{
-  prompt.get(['API Key', 'Secret'], function (err, result) {
-    const credentials = "API_KEY=" + result['API Key'] + " API_SECRET="+ result['Secret']
+processCredentials()
+.then(init)
+.catch(promptForNewCredentials)
 
-    // Save credentials to .env file
-    fs.writeFile(__dirname + `/.env`, credentials, function(err){
-      if(err) throw new Error(err)
-      console.log('Credentials stored');
-    })
-  });
+function processCredentials()
+{
+  return new Promise((resolve, reject) => {
+    // If credentials.json doesn't exist or --config was passed in, prompt for new credentials
+    if(!fs.existsSync(__dirname + "/credentials.json") || argv.config)
+      reject()
+    else
+    {
+      fs.readFile(__dirname + '/credentials.json', (err, credentials) => {
+        if (err) reject(err)
+        else
+        {
+          const poloniex = new Poloniex(JSON.parse(credentials).API_KEY, JSON.parse(credentials).API_SECRET)
+          bot.poloniex = poloniex
+          resolve()
+        }
+      });
+    }
+  })
 }
-else
-  init()
 
 function init()
 {
@@ -40,6 +51,19 @@ function init()
     console.log(`📊 Backtesting Mode... (Major: ${bot.majorCurrency}) (Minor: ${bot.minorCurrency}) Period: ${bot.period}s Start: ${bot.startTime} End: ${bot.endTime}`.magenta);
     backTest()
   }
+}
+
+function promptForNewCredentials()
+{
+  prompt.get(['API Key', 'Secret'], function (err, result) {
+    const credentials = `{ "API_KEY": "${result['API Key']}", "API_SECRET": "${result['Secret']}" }`
+
+    // Save credentials to credentials.json
+    fs.writeFile(__dirname + `/credentials.json`, credentials, function(err){
+      if(err) throw new Error(err)
+      console.log('Credentials stored');
+    })
+  });
 }
 
 async function liveTrader()

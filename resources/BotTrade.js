@@ -1,7 +1,4 @@
 const BotLogger = require('./BotLogger')
-const Poloniex = require('poloniex.js')
-const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
-require('dotenv').config();
 
 function BotTrade(currentPrice, bot, stopLoss)
 {
@@ -12,6 +9,7 @@ function BotTrade(currentPrice, bot, stopLoss)
   this.orderNumber = null
   this.log = new BotLogger().log
   this.log("Opening Trade...".yellow)
+
   if(stopLoss)
     this.stopLoss = currentPrice - stopLoss
 
@@ -25,7 +23,7 @@ function BotTrade(currentPrice, bot, stopLoss)
     this.log(`Initiating Buy Order for ${this.bot.tradeAmount} ${this.bot.minorCurrency} at the rate of 1 ${this.bot.minorCurrency} = ${this.entryPrice} ${this.bot.majorCurrency}...`.yellow);
 
     // Buy
-    poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, this.bot.tradeAmount).then(order => {
+    this.bot.poloniex.buy(this.bot.majorCurrency, this.bot.minorCurrency, this.entryPrice, this.bot.tradeAmount).then(order => {
       if(order.orderNumber)
         this.orderNumber = order.orderNumber
       console.log(order);
@@ -51,7 +49,7 @@ BotTrade.prototype.close = function(currentPrice)
     // Check to see if the Buy Order has been closed
     if(this.orderNumber)
     {
-      poloniex.returnOpenOrders("all").then(orders => {
+      this.bot.poloniex.returnOpenOrders("all").then(orders => {
         if(orders.length > 0)
         {
           orders.forEach(order => {
@@ -72,7 +70,7 @@ BotTrade.prototype.close = function(currentPrice)
         this.log(`Initiating Sell Order for ${this.bot.tradeAmount} ${this.bot.minorCurrency} at the rate of 1 ${this.bot.minorCurrency} = ${this.exitPrice} ${this.bot.majorCurrency}...`.yellow);
 
         // Sell
-        poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, this.bot.tradeAmount).then(data => {
+        this.bot.poloniex.sell(this.bot.majorCurrency, this.bot.minorCurrency, this.exitPrice, this.bot.tradeAmount).then(data => {
           console.log(data);
         })
         .catch(err => {

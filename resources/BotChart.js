@@ -5,8 +5,6 @@ const BotCandlestick = require('./BotCandlestick')
 const BotIndicator = require('./BotIndicator')
 const Poloniex = require('poloniex.js')
 const colors = require('colors')
-const poloniex = new Poloniex(process.env.API_KEY, process.env.API_SECRET)
-require('dotenv').config();
 
 function Chart(bot)
 {
@@ -18,7 +16,7 @@ Chart.prototype.fetchHistoricalData = function()
 {
   return new Promise((resolve, reject)=> {
     console.log('Fetching Historical Data...');
-    poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.period, this.bot.startTime, this.bot.endTime)
+    this.bot.poloniex.returnChartData(this.bot.majorCurrency, this.bot.minorCurrency, this.bot.period, this.bot.startTime, this.bot.endTime)
     .then(res => {
       if(!res.error)
       {
@@ -36,7 +34,7 @@ Chart.prototype.fetchHistoricalData = function()
 Chart.prototype.getCurrentPrice = function()
 {
   return new Promise((resolve, reject)=>{
-    poloniex.returnTicker().then(data => {
+    this.bot.poloniex.returnTicker().then(data => {
       if (data[this.bot.currency])
         resolve(data[this.bot.currency].last)
       else
