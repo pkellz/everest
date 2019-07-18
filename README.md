@@ -28,7 +28,7 @@ everest -c BTC_XRP
 ```
 This command generates a simulation of Everest's activity within some period of time in the past. By default, the Backtester will simulate the last 6 hours of crypto prices for that currency pair.
 
-![](https://previews.dropbox.com/p/thumb/AAdwRS-B106zxbCFlrsLtjA4HiDH1l062UL4UiAj-4ISLgzlthpdHZ-Uh3VaE6QOMAcdup0s9Lf6yO69Jbvc87vBSBEGl07Ej5xmNgPcnAT80lsRAgAGKHNBxd_Hi9E7kqRpk-DerGNq3328qSlZ3236MGqsnR_cZRnGSrGD6FtVNMO_YngTMwnswfPCNHeRICmGpboDTEBMr279eJfvU-BihlqXca5DBsv8CcYCDVtqmBjAkmv2R1TomF2LkbCaKU5mYUpfOJnJLtjOl0RXsmRuO1QpYmmBxGUJr4jPlw2mvK8GV_JZKfuhU20WNf7BlNp28vC_miQ-pxkSVRza2Lu3XSwzTsVEXBnZS7VBfh8lsg/p.png?fv_content=true&size_mode=5)
+![](docs/images/backtest.png)
 You can also define a custom period of time to simulate by passing in `-s` start time and `-e` end time flags. These times need to be in [**Unix epoch**](https://www.epochconverter.com/) format.
 ```javascript
 everest -c BTC_LTC -s 1491048000 -e 1491591200
@@ -36,7 +36,7 @@ everest -c BTC_LTC -s 1491048000 -e 1491591200
 ```
 Everest will also generate a line chart that shows the Values and Moving Averages (length 15) of the currency pair over that time interval. This chart will be saved in your Home (`cd ~`) directory.
 
-![](https://previews.dropbox.com/p/thumb/AAdH_6FodRgETc6_tvhAl5OJpplFoDaoWoTSA4flgjVgUk4nRP0gJNHkenmzmiioNyedGPH3m3kdYk1GZJR91NqrgYi9nXJjpZeJC5cFgeULlqzMs-cgrRFuvDISonzFIJF41nViE7sr0ChzWUHW-ArooACFKpeju7GrVX6aYZymhk2xh2QyHVu9pBUBjfj513hkKTrVblHcp2F8mw85wv2S23jnj5pzfTgAEiEsgPuHrQI2va96-63djaBwi5_XdCNc8iywuVtxl_k2wnSq8PEdXDTMuSp6Qz0XwsVXAtKpb2pktWXkVYS557x7Gds7vkvNUNkfILcx2dNe9Zd3WQ2ULIw_y1lXdNwD2q5Jq-xfuw/p.png?fv_content=true&size_mode=5)
+![](docs/images/chart.png)
 
 You may also pass in a `-p` period in seconds that defines the candlestick width of your backtesting data. The default period is 900 seconds (15 minutes). The accepted values are [300, 900, 1800, 7200]. The shorter (smaller) your period, the more detailed your chart will look.
 ```javascript
@@ -73,13 +73,12 @@ everest -c BTC_DASH -t 0.5 -i 300 --live
 ```
 
  At the end of every period (except the first), Everest will calculate the Moving Average of the last 15 ticks and compare it to the current price and determine if it wants to open a Trade. If the Moving Average is **greater than** the current price, Everest opens a Trade (buys *X* units of the Minor currency) in expectation that the price will eventually rise to meet the growing Moving Average. When the Moving Average **falls below** the current price, Everest closes the trade (sells *X* units of Minor currency back to the market).
- ![](https://previews.dropbox.com/p/thumb/AAdJJzbXbb8Ap0JTOzLJ3a6t6ac4PKkCRcjiUY2CmmQRmIPjs99zp_1uikjX8I2YbD74HOMGxV58zL1skazmVaXaEbHrzR2_PDFhF2Cm1c_BxaxIDLz4etsUlEwWnVsck9wUzMinc5yx_M_xiYV4ncD_pc15YE154RzGPymWd_wDd9QqHbkVoQZrUjKqZgRPOi4pO68l_OLqCSvNUaCO_GQTn63HV8di9VIBhykYvKYVnIaWY-IYpVovLjMmTqIrAtmVdLqBGgWwNPpwu99jNl0TtrnmWl4Kaw3VMA1JVnC0z13-7IWvmpAbCqMQsrwOGmAt4j9OOUX4PGQ4jLXOj03ntE5R_9qhVoTVLg44Nhnwog/p.png?fv_content=true&size_mode=5)
+![](docs/images/example.png)
 
 Currently, the Moving Average indicator is the only indicator supported. Support for MACD, RSI, and EMA is on the radar for the near future.
 
 **Notice!** Be aware that this indicator does not guarantee profit. It's possible that a trade looks like this:
-![](https://previews.dropbox.com/p/thumb/AAeE87XH7-eDRpaEh6AnkxXlzhaVhvN7JbtmK5EYr156JEPcODb8RSxm4qb1XG08sNsvblUzgXNCVhhjMlCOs92gWQh2hLPhNuajCf7UFKqbMEjBZMxzWnCwmKtU_CCioOuVcff_lAl7fcn6w6qgBmD_tKyAytaBjxjGgLwZnM_wGjhFlVKHA3fBT5JA0BM0lVftyMB01i_hep_C9dAwgXRiSB2C_CpR1hQfICTgMXKkmDiMGrhcJk7VIqf-Mpqdmy19SozMfxWBPqQxJ5D5X2NtT7Z0CMhqzro65PXbQCnIOMAg2OEfVrFBJGr9fsarxyC6YaR-jQOlcaFvlW5IvJ3HWtQcrrZUrAMBa017fcKUuA/p.png?fv_content=true&size_mode=5)
-
+![](docs/images/example2.png)
 
 
 ## :signal_strength: Indicators
