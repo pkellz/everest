@@ -86,22 +86,22 @@ Currently, the Moving Average indicator is the only indicator supported. Support
 ### (Planning) EMA, RSI, MACD
 
 ## Options
-`-c --currency` - For Backtesting and Live-Trading: The currency pair you want to trade with in MAJ_MIN format. [**Default** - BTC_ETH]
+`-c --currency` - For Backtesting and Live-Trading: The currency pair you want to trade with in MAJ_MIN format. (**Default** - BTC_ETH)
 
-`-p --period` - For Backtesting: The candlestick width (in seconds) of your backtesting data. Accepted values are [300, 900, 1800, 7200]. The smaller your period, the more detailed your chart will be.  [**Default** - 900] (**Optional**)
+`-p --period` - For Backtesting: The candlestick width (in seconds) of your backtesting data. Accepted values are [300, 900, 1800, 7200]. The smaller your period, the more detailed your chart will be.  (**Default** - 900) **Optional**
 
-`-s --start` - For Backtesting: The start time of Backtesting data you want to retrieve [**Default** - 6 hours in the past] (**Optional**)
+`-s --start` - For Backtesting: The start time of Backtesting data you want to retrieve (**Default** - 6 hours in the past) **Optional**
 
-`-e --end` - For Backtesting: The end time of Backtesting data you want to retrieve [**Default** - Now] (**Optional**)
+`-e --end` - For Backtesting: The end time of Backtesting data you want to retrieve (**Default** - Now **Optional**
 
-`-i --interval` - For Live-Trading: The time interval (in seconds) that Everest should wait before closing the current candlestick and attempting a Trade. Smaller intervals mean faster Trades. [**Default** - 120] (**Optional**)
+`-i --interval` - For Live-Trading: The time interval (in seconds) that Everest should wait before closing the current candlestick and attempting a Trade. Smaller intervals mean faster Trades. (**Default** - 120) **Optional**
 
-`-t --tradeAmount` - For Live-Trading: The amount of Minor currency to buy and sell when trading [**Default** - 0.01] (**Optional**)
+`-t --tradeAmount` - For Live-Trading: The amount of Minor currency to buy and sell when trading (**Default**) - 0.01 **Optional**
 
-`-l --live` - For Live-Trading: Tells Everest to run in Live-Trading Mode. Does not use real currency unless `--real` flag is used.
+`-l --live` - For Live-Trading: Tells Everest to run in Live-Trading Mode. Does not use real currency unless `--real` flag is used. **Optional**
 
-`-r --real` - For Live-Trading: Used along with `--live`. Tells Everest to use real cryptocurrency from your Poloniex account.
+`-r --real` - For Live-Trading: Used along with `--live`. Tells Everest to use real cryptocurrency from your Poloniex account. **Optional**
 
-`-stopLoss` - For Live-Trading: Defines a stop loss to use when trading. If a Trade is opened and the price falls below (Entry Price - Stop Loss), Everest automatically closes the Trade for a loss. [**Default** - 0.1] (**Optional**)
+`-stopLoss` - For Live-Trading: Defines a stop loss to use when trading. If a Trade is opened and the price falls below (Entry Price - Stop Loss), Everest automatically closes the Trade for a loss. (**Default** - 0.1) **Optional**
 
 ### :bug: If you find a bug, please open an issue. Contributors are welcome!
