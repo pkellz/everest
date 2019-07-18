@@ -51,14 +51,14 @@ function Bot()
   if(this.endTime < this.startTime)
     throw new Error("Start time must be less than the end time!")
   this.dataPoints = points || []
-  this.stopLoss = stopLoss || 0.001
+  this.stopLoss = stopLoss || 0.1
   this.majorCurrency = this.currency.split("_")[0]
   this.minorCurrency = this.currency.split("_")[1]
   this.prices = []
   this.historicalData = false
   this.log = new BotLogger().log
   this.candlesticks = []
-  this.poloniex = null 
+  this.poloniex = null
   initResources.call(this, resources)
 }
 
