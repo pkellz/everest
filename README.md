@@ -1,6 +1,8 @@
 # Everest
 :robot: Live-trading crypto bot for the [Poloniex](https://poloniex.com/) exchange.
 
+This bot is a port-over from the Python live-trading bot from [this](https://www.youtube.com/watch?v=fpqzXgZjSqM&list=PL2U3qLYtsXsT5QuFQUtxbfj62K3AiLOse&index=3) Youtube tutorial.
+
 ## :sparkles: Getting Started
 To get started, you need a Poloniex account. If you don't have one already, create a new account [here](https://poloniex.com/).
 
