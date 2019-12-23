@@ -1,6 +1,10 @@
 # Everest
 :robot: Live-trading crypto bot for the [Poloniex](https://poloniex.com/) exchange.
 
+## Update! 
+### As of December 15, 2019 Poloniex has discontinued crypto trading for US residents! :disappointed:
+#### I am considering modifying Everest to make it exchange-agnostic so that you will be able to trade on multiple platforms such as Coinbase, Binance, or Kraken. (Don't hold your breath, though. :grimacing:)
+
 This bot is a port-over from the Python live-trading bot from [this](https://www.youtube.com/watch?v=fpqzXgZjSqM&list=PL2U3qLYtsXsT5QuFQUtxbfj62K3AiLOse&index=3) Youtube tutorial.
 
 ## :sparkles: Getting Started
